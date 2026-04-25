@@ -1,0 +1,17 @@
+{
+  "defaultCustomer": {
+    "firstName": "QA",
+    "lastName": "Agent",
+    "postalCode": "12345"
+  },
+  "errors": {
+    "firstNameRequired": "Error: First Name is required",
+    "lastNameRequired": "Error: Last Name is required",
+    "postalCodeRequired": "Error: Postal Code is required"
+  },
+  "expectedBackpackSummary": {
+    "itemTotal": "$29.99",
+    "tax": "$2.40",
+    "total": "$32.39"
+  }
+}

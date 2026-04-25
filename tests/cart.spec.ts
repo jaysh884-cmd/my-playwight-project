@@ -2,7 +2,7 @@ import { test, expect } from '../fixtures/baseTest';
 import { CartPage } from '../pages/CartPage';
 import { InventoryPage } from '../pages/InventoryPage';
 import { LoginPage } from '../pages/LoginPage';
-import { buildUserCredentials } from '../utils/testData';
+import { buildUserCredentials, getTestData } from '../utils/testData';
 
 test.describe('Sauce Demo cart', () => {
   test.beforeEach(async ({ page, environment }) => {
@@ -15,27 +15,31 @@ test.describe('Sauce Demo cart', () => {
     await inventoryPage.expectLoaded();
   });
 
-  test('shows selected product in cart', async ({ page }) => {
+  test('shows selected product in cart', async ({ page, environment }) => {
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
+    const testData = getTestData(environment);
+    const product = testData.products.backpack;
 
-    await inventoryPage.addProductToCart('Sauce Labs Backpack');
+    await inventoryPage.addProductToCart(product.name);
     await inventoryPage.openCart();
 
     await cartPage.expectLoaded();
-    await cartPage.expectProductInCart('Sauce Labs Backpack');
+    await cartPage.expectProductInCart(product.name);
   });
 
-  test('removes a product from cart', async ({ page }) => {
+  test('removes a product from cart', async ({ page, environment }) => {
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
+    const testData = getTestData(environment);
+    const product = testData.products.backpack;
 
-    await inventoryPage.addProductToCart('Sauce Labs Backpack');
+    await inventoryPage.addProductToCart(product.name);
     await inventoryPage.openCart();
     await cartPage.expectLoaded();
 
-    await cartPage.removeProduct('Sauce Labs Backpack');
-    await cartPage.expectProductNotInCart('Sauce Labs Backpack');
+    await cartPage.removeProduct(product.name);
+    await cartPage.expectProductNotInCart(product.name);
   });
 
   test('returns to inventory from cart', async ({ page }) => {

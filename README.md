@@ -9,6 +9,7 @@ This project is a starter Playwright Test Runner framework using TypeScript, Pag
 - `fixtures/`: Shared test setup for cross-cutting context such as environment and agent metadata.
 - `utils/`: Helpers for data, logging, agent metadata, and reusable support code.
 - `config/`: Environment and runtime configuration.
+- `test-data/`: Environment-specific data split by feature/domain.
 
 ## Setup
 
@@ -41,6 +42,23 @@ On Windows PowerShell:
 ```powershell
 $env:TEST_ENV="test"; npm test
 ```
+
+## Test Data
+
+Environment URLs live in `config/environment.ts`. Test values live in `test-data/<environment>/` and are split by domain:
+
+- `users.json`
+- `products.json`
+- `checkout.json`
+
+Tests should load data through `getTestData(environment)` from `utils/testData.ts` instead of importing JSON files directly:
+
+```ts
+const data = getTestData(environment);
+await loginPage.login(data.users.standard.username, data.users.standard.password);
+```
+
+`LOGIN_USERNAME` and `LOGIN_PASSWORD` can still override the standard user at runtime through `.env`, CI variables, or GitHub Secrets.
 
 ## POM Usage
 

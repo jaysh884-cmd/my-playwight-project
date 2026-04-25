@@ -7,8 +7,7 @@ import {
   sortStringsAscending,
   sortStringsDescending
 } from '../utils/arrayHelpers';
-import { sauceDemoProducts } from '../utils/saucedemoProducts';
-import { buildUserCredentials } from '../utils/testData';
+import { buildUserCredentials, getTestData } from '../utils/testData';
 
 test.describe('Sauce Demo inventory', () => {
   test.beforeEach(async ({ page, environment }) => {
@@ -19,13 +18,14 @@ test.describe('Sauce Demo inventory', () => {
     await loginPage.login(credentials.username, credentials.password);
   });
 
-  test('shows all expected products with prices', async ({ page }) => {
+  test('shows all expected products with prices', async ({ page, environment }) => {
     const inventoryPage = new InventoryPage(page);
+    const testData = getTestData(environment);
 
     await inventoryPage.expectLoaded();
-    await inventoryPage.expectProductCount(sauceDemoProducts.length);
+    await inventoryPage.expectProductCount(testData.products.all.length);
 
-    for (const product of sauceDemoProducts) {
+    for (const product of testData.products.all) {
       await inventoryPage.expectProductVisible(product.name, product.price);
     }
   });
@@ -52,14 +52,16 @@ test.describe('Sauce Demo inventory', () => {
     expect(productPrices).toEqual(sortNumbersDescending(productPrices));
   });
 
-  test('adds and removes a product from the listing page', async ({ page }) => {
+  test('adds and removes a product from the listing page', async ({ page, environment }) => {
     const inventoryPage = new InventoryPage(page);
+    const testData = getTestData(environment);
+    const product = testData.products.backpack;
 
     await inventoryPage.expectLoaded();
-    await inventoryPage.addProductToCart('Sauce Labs Backpack');
+    await inventoryPage.addProductToCart(product.name);
     await inventoryPage.expectCartBadgeCount(1);
 
-    await inventoryPage.removeProductFromCart('Sauce Labs Backpack');
+    await inventoryPage.removeProductFromCart(product.name);
     await inventoryPage.expectCartBadgeHidden();
   });
 });

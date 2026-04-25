@@ -3,44 +3,24 @@ export type EnvironmentName = 'dev' | 'test' | 'qa' | 'stage';
 export interface EnvironmentConfig {
   name: EnvironmentName;
   baseUrl: string;
-  credentials: {
-    username: string;
-    password: string;
-  };
 }
 
 const environments: Record<EnvironmentName, EnvironmentConfig> = {
   dev: {
     name: 'dev',
-    baseUrl: 'https://www.saucedemo.com',
-    credentials: {
-      username: 'standard_user',
-      password: 'secret_sauce'
-    }
+    baseUrl: 'https://www.saucedemo.com'
   },
   test: {
     name: 'test',
-    baseUrl: 'https://www.saucedemo.com',
-    credentials: {
-      username: 'standard_user',
-      password: 'secret_sauce'
-    }
+    baseUrl: 'https://www.saucedemo.com'
   },
   qa: {
     name: 'qa',
-    baseUrl: 'https://www.saucedemo.com',
-    credentials: {
-      username: 'standard_user',
-      password: 'secret_sauce'
-    }
+    baseUrl: 'https://www.saucedemo.com'
   },
   stage: {
     name: 'stage',
-    baseUrl: 'https://www.saucedemo.com',
-    credentials: {
-      username: 'standard_user',
-      password: 'secret_sauce'
-    }
+    baseUrl: 'https://www.saucedemo.com'
   }
 };
 
@@ -70,10 +50,6 @@ export function getEnvironmentConfig(): EnvironmentConfig {
 
   return {
     ...selectedEnvironment,
-    baseUrl: getOptionalEnvValue('BASE_URL') ?? selectedEnvironment.baseUrl,
-    credentials: {
-      username: getOptionalEnvValue('LOGIN_USERNAME') ?? selectedEnvironment.credentials.username,
-      password: getOptionalEnvValue('LOGIN_PASSWORD') ?? selectedEnvironment.credentials.password
-    }
+    baseUrl: getOptionalEnvValue('BASE_URL') ?? selectedEnvironment.baseUrl
   };
 }
