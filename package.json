@@ -1,0 +1,22 @@
+{
+  "name": "my-agentic-qa-project",
+  "version": "1.0.0",
+  "description": "Playwright TypeScript automation framework with POM, fixtures, environment config, and AI-agent-ready utilities.",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:dev": "cross-env TEST_ENV=dev playwright test",
+    "test:test": "cross-env TEST_ENV=test playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "codegen:dev": "cross-env TEST_ENV=dev playwright codegen",
+    "install:browsers": "playwright install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@types/node": "^20.14.0",
+    "cross-env": "^7.0.3",
+    "typescript": "^5.5.0"
+  }
+}
