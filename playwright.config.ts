@@ -21,7 +21,7 @@ export default defineConfig({
     baseURL: environment.baseUrl,
     testIdAttribute: 'data-test',
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
+    screenshot: 'on',
     video: 'retain-on-failure',
     actionTimeout: 10_000,
     navigationTimeout: 15_000
