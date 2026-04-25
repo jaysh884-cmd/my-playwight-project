@@ -1,4 +1,4 @@
-export type EnvironmentName = 'dev' | 'test';
+export type EnvironmentName = 'dev' | 'test' | 'qa' | 'stage';
 
 export interface EnvironmentConfig {
   name: EnvironmentName;
@@ -25,17 +25,38 @@ const environments: Record<EnvironmentName, EnvironmentConfig> = {
       username: 'standard_user',
       password: 'secret_sauce'
     }
+  },
+  qa: {
+    name: 'qa',
+    baseUrl: 'https://www.saucedemo.com',
+    credentials: {
+      username: 'standard_user',
+      password: 'secret_sauce'
+    }
+  },
+  stage: {
+    name: 'stage',
+    baseUrl: 'https://www.saucedemo.com',
+    credentials: {
+      username: 'standard_user',
+      password: 'secret_sauce'
+    }
   }
 };
 
 function resolveEnvironmentName(): EnvironmentName {
   const requestedEnvironment = process.env.TEST_ENV ?? 'dev';
 
-  if (requestedEnvironment === 'dev' || requestedEnvironment === 'test') {
+  if (
+    requestedEnvironment === 'dev' ||
+    requestedEnvironment === 'test' ||
+    requestedEnvironment === 'qa' ||
+    requestedEnvironment === 'stage'
+  ) {
     return requestedEnvironment;
   }
 
-  throw new Error(`Unsupported TEST_ENV "${requestedEnvironment}". Use "dev" or "test".`);
+  throw new Error(`Unsupported TEST_ENV "${requestedEnvironment}". Use "dev", "test", "qa", or "stage".`);
 }
 
 function getOptionalEnvValue(name: string): string | undefined {

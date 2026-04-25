@@ -10,17 +10,39 @@ on:
       - main
       - master
   workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment to run against
+        required: true
+        default: test
+        type: choice
+        options:
+          - dev
+          - test
+          - qa
+          - stage
+      browser:
+        description: Browser project to execute
+        required: true
+        default: chromium
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+          - all
 
 jobs:
   playwright:
-    name: Run Sauce Demo Tests
+    name: Run Sauce Demo Tests (${{ github.event.inputs.environment || 'test' }}, ${{ github.event.inputs.browser || 'chromium' }})
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
 
     env:
-      TEST_ENV: test
+      TEST_ENV: ${{ github.event.inputs.environment || 'test' }}
+      BROWSER: ${{ github.event.inputs.browser || 'chromium' }}
       BASE_URL: https://www.saucedemo.com
       LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
       LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
@@ -45,7 +67,14 @@ jobs:
         run: npx tsc --noEmit
 
       - name: Run Playwright tests
-        run: npx playwright test tests/login.spec.ts tests/inventory.spec.ts tests/cart.spec.ts tests/checkout.spec.ts --project=chromium
+        run: |
+          TEST_FILES="tests/login.spec.ts tests/inventory.spec.ts tests/cart.spec.ts tests/checkout.spec.ts"
+
+          if [ "$BROWSER" = "all" ]; then
+            npx playwright test $TEST_FILES
+          else
+            npx playwright test $TEST_FILES --project="$BROWSER"
+          fi
 
       - name: Upload Playwright HTML report
         if: always()
